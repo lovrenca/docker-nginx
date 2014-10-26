@@ -11,6 +11,7 @@ RUN apt-get update && \
     apt-get clean
 
 #Add nginx config
+RUN rm /etc/nginx/sites-enabled/default
 ADD nginx.conf /etc/nginx.conf
 ADD sites-enabled/ /etc/nginx/sites-enabled/
 
