@@ -12,7 +12,7 @@ RUN apt-get update && \
 
 #Add nginx config
 RUN rm /etc/nginx/sites-enabled/default
-ADD nginx.conf /etc/nginx.conf
+ADD nginx.conf /etc/nginx/nginx.conf
 ADD sites-enabled/ /etc/nginx/sites-enabled/
 
 #Open ports
@@ -20,4 +20,6 @@ EXPOSE 80
 EXPOSE 443
 
 #Run!
-CMD /usr/sbin/nginx -c /etc/nginx/nginx.conf
+CMD find /opt/web -type f -exec chmod 644 '{}' \; \
+    find /opt/web -type d -exec chmod 755 '{}' \; \
+    /usr/sbin/nginx -c /etc/nginx/nginx.conf
