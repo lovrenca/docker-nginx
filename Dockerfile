@@ -20,6 +20,4 @@ EXPOSE 80
 EXPOSE 443
 
 #Run!
-CMD find /opt/web -type f -exec chmod 644 '{}' \; \
-    find /opt/web -type d -exec chmod 755 '{}' \; \
-    /usr/sbin/nginx -c /etc/nginx/nginx.conf
+CMD /usr/sbin/nginx -c /etc/nginx/nginx.conf
