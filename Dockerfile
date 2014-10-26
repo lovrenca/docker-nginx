@@ -1,29 +1,22 @@
-#
-#       .
-#        ":"
-#      ___:____     |"\/"|
-#    ,'        `.    \  /
-#    |  O        \___/  |
-#  ~^~^~^~^~^~^~^~^~^~^~^~^~
-#The nginx container
-
-FROM ubuntu:latest
-# Would use Kendu as the maintainer, but I need the account.
+#Required params
+FROM debian:wheezy
 MAINTAINER Lovrenc Avsenek <a.lovrenc@gmail.com>
 
-#Set loclaes. Oh yes this is meant to be edited before use!
-RUN locale-gen %locale% && \
-    echo LANG="%locale%" > /etc/default/locale
+ENV     DEBIAN_FRONTEND noninteractive
 
 # Instaling package and clean up the mess
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive \
     apt-get -y install \
         nginx && \
     apt-get clean
 
+#Add nginx config
+ADD nginx.conf /etc/nginx.conf
+ADD sites-enabled/ /etc/nginx/sites-enabled/
+
+#Open ports
 EXPOSE 80
+EXPOSE 443
+
 #Run!
-CMD chmod 777 /opt/web/media; \
-    chmod 755 /opt/web; \
-    /usr/sbin/nginx -c /etc/nginx/nginx.conf
+CMD /usr/sbin/nginx -c /etc/nginx/nginx.conf
