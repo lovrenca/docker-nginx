@@ -1,0 +1,35 @@
+web:
+    #Image we're using
+    image: lovrenca/nginx
+
+    #Volumes
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+
+    ##bind custom config files
+    ##Note the trailing slashes where the volume is a directory
+    #- /path/to/your/config:/etc/nginx/nginx.conf:ro
+    #- /path/to/server/config/directory/:/etc/nginx/sites-enabled/:ro
+
+    #Bind ports.
+    volumes_from:
+      - prjData
+
+    ports:
+      - "80:80"
+      #- "443:443"
+    #You can bind a port so it's acessible only from your machine like this:
+    # "127.0.0.1:80:80"
+    links:
+      - php
+
+php:
+    image: lovrenca/php-fpm
+
+    volumes_from:
+      - prjData
+
+prjData:
+    image: debian
+    volumes:
+      - ./:/opt/web/
